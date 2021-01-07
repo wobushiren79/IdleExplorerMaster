@@ -3,21 +3,18 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Collections;
 
-public class AudioHandler : BaseHandler<AudioManager>
+public class AudioHandler : BaseHandler<AudioHandler, AudioManager>
 {
     protected AudioListener audioListener;
     protected AudioSource audioSourceForMusic;
     protected AudioSource audioSourceForSound;
     protected AudioSource audioSourceForEnvironment;
-    protected AudioManager audioManager;
 
     protected int sourceNumber  = 0;
     protected int sourceMaxNumber = 5;
     protected override void Awake()
     {
         base.Awake();
-        audioListener = Find<AudioListener>(ImportantTypeEnum.MainCamera);
-        audioManager = Find<AudioManager>(ImportantTypeEnum.AudioManager);
         audioSourceForMusic = CptUtil.GetCptInChildrenByName<AudioSource>(Camera.main.gameObject, "Music");
         audioSourceForSound = CptUtil.GetCptInChildrenByName<AudioSource>(Camera.main.gameObject, "Sound");
         audioSourceForEnvironment = CptUtil.GetCptInChildrenByName<AudioSource>(Camera.main.gameObject, "Environment");
@@ -104,16 +101,16 @@ public class AudioHandler : BaseHandler<AudioManager>
         switch (sound)
         {
             case AudioSoundEnum.ButtonForNormal:
-                audioClip = audioManager.GetSoundClip("sound_btn_3");
+                audioClip = manager.GetSoundClip("sound_btn_3");
                 break;
             case AudioSoundEnum.ButtonForBack:
-                audioClip = audioManager.GetSoundClip("sound_btn_2");
+                audioClip = manager.GetSoundClip("sound_btn_2");
                 break;
             case AudioSoundEnum.ButtonForHighLight:
-                audioClip = audioManager.GetSoundClip("sound_btn_1");
+                audioClip = manager.GetSoundClip("sound_btn_1");
                 break;
             case AudioSoundEnum.ButtonForShow:
-                audioClip = audioManager.GetSoundClip("sound_btn_6");
+                audioClip = manager.GetSoundClip("sound_btn_6");
                 break;
         }
         if (audioClip != null)

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FPSHandler : BaseHandler<BaseManager> {
+public class FPSHandler : BaseHandler<FPSHandler, BaseManager>
+{
 
     protected override void Awake()
     {
@@ -11,7 +12,7 @@ public class FPSHandler : BaseHandler<BaseManager> {
         SetData(GameCommonInfo.GameConfig.statusForFrames, GameCommonInfo.GameConfig.frames);
     }
 
-    public void SetData(bool isLock,int fps)
+    public void SetData(bool isLock, int fps)
     {
         if (isLock)
         {

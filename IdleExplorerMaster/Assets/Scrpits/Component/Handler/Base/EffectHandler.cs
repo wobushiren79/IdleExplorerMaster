@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-public class EffectHandler : BaseHandler<EffectManager>
+public class EffectHandler : BaseHandler<EffectHandler,EffectManager>
 {
 
     /// <summary>
