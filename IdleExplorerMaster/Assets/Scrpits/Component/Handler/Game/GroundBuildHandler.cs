@@ -31,13 +31,20 @@ public class GroundBuildHandler : BaseHandler<GroundBuildHandler, GroundBuildMan
                     //设置偏移坐标
                     coordinatesForOffset = new Vector3(x, 0, z),
                     //设置世界坐标
-                    coordinatesForWorld = new Vector3(intervalX * x + offsetX * x, 0, intervalZ * z + offsetZ * z + tempOffsetZ)
+                    coordinatesForWorld = new Vector3(intervalX * x + offsetX * x, 0, intervalZ * z + offsetZ * z + tempOffsetZ),
+                    //设置地形为未探索
+                    areaDiscoveryStatus = AreaDiscoveryStatusEnum.Unexplored,
+                    //随机设置区域类型
+                    areaType = (AreaTypeEnum)Random.Range(1, 4)
                 };
+                //随机设置模型名称
+                AreaTypeInfoBean areaTypeInfo=  manager.GetRandomAreaTypeInfo(groundHexagonsData.areaType);
+                groundHexagonsData.areaTypeModelName = areaTypeInfo.model_name;
+
                 BuildItemGroundHexagons(groundHexagonsData);
                 manager.AddGroundHexagonsData(groundHexagonsData);
             }
         }
-
         //扫描地形
         StartCoroutine(CoroutineForScanGround());
     }
@@ -48,9 +55,28 @@ public class GroundBuildHandler : BaseHandler<GroundBuildHandler, GroundBuildMan
     /// <param name="groundHexagonsData"></param>
     public void BuildItemGroundHexagons(GroundHexagonsBean groundHexagonsData)
     {
+        //创建六角实例
         GameObject objGroundHexagons = Instantiate(gameObject, modelForGroundHexagons.gameObject, groundHexagonsData.coordinatesForWorld);
         GroundHexagons itemGroundHexagons = objGroundHexagons.GetComponent<GroundHexagons>();
-        itemGroundHexagons.SetGroundHexagonsData(groundHexagonsData);
+        //获取区域类型模型
+        GameObject objModelAreaType = manager.GetAreaTypeModel(groundHexagonsData.areaType, groundHexagonsData.areaTypeModelName);
+        AreaType areaType = BuildItemAreaType(itemGroundHexagons.areaTerrain.gameObject, objModelAreaType);
+        //设置数据
+        itemGroundHexagons.SetGroundHexagonsData(groundHexagonsData, areaType);
+    }
+
+    /// <summary>
+    /// 创建区域类型
+    /// </summary>
+    /// <param name="objContent"></param>
+    /// <param name="objModel"></param>
+    /// <returns></returns>
+    public AreaType BuildItemAreaType(GameObject objContent, GameObject objModel)
+    {
+        GameObject objAreaType = Instantiate(objContent, objModel);
+        AreaType areaType = objAreaType.GetComponent<AreaType>();
+        objAreaType.SetActive(false);
+        return areaType;
     }
 
     /// <summary>

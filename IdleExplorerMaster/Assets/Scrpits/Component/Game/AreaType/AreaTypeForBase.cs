@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public enum TerrainTypeEnum 
+public class AreaTypeForBase : AreaType
 {
-    Def = 0,
+ 
 }
