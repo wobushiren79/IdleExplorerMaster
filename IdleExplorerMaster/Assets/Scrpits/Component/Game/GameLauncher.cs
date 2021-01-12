@@ -9,14 +9,14 @@ public class GameLauncher : BaseMonoBehaviour
 
     private void Awake()
     {
-        UserGroundDataBean userGroundData = new UserGroundDataBean(20, 20);
+        UserSceneDataBean userGroundData = new UserSceneDataBean(20, 20);
         GroundBuildHandler.Instance.InitGround(userGroundData);
         CameraHandler.Instance.InitCamera();
     }
 
     private void Start()
     {
-        UserGroundDataBean userGroundData = GroundBuildHandler.Instance.currentGroundData;
+        UserSceneDataBean userGroundData = GroundBuildHandler.Instance.currentGroundData;
         //显示友方区域
         List<GroundHexagons> listPlayerData = GroundBuildHandler.Instance.manager.GetInfluence(userGroundData.playerId);
         for (int i = 0; i < listPlayerData.Count; i++)

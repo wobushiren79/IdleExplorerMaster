@@ -8,9 +8,9 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public interface IUserGroundDataView
+public interface IUserSceneDataView
 {
-	void GetUserGroundDataSuccess<T>(T data, Action<T> action);
+	void GetUserSceneDataSuccess<T>(T data, Action<T> action);
 
-	void GetUserGroundDataFail(string failMsg, Action action);
+	void GetUserSceneDataFail(string failMsg, Action action);
 }

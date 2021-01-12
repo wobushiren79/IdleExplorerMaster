@@ -11,7 +11,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 
 [Serializable]
-public class UserGroundDataBean : BaseBean
+public class UserSceneDataBean : BaseBean
 {
     public string groundId;
     public int groundX;
@@ -20,7 +20,7 @@ public class UserGroundDataBean : BaseBean
     public string playerId;
     public List<string> enemyId;
 
-    public UserGroundDataBean(int groundX, int groundZ)
+    public UserSceneDataBean(int groundX, int groundZ)
     {
         this.groundX = groundX;
         this.groundZ = groundZ;

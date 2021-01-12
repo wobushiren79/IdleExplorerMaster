@@ -8,22 +8,22 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-public class UserGroundDataModel : BaseMVCModel
+public class UserSceneDataModel : BaseMVCModel
 {
-    protected UserGroundDataService serviceUserGroundData;
+    protected UserSceneDataService serviceUserGroundData;
 
     public override void InitData()
     {
-        serviceUserGroundData = new UserGroundDataService();
+        serviceUserGroundData = new UserSceneDataService();
     }
 
     /// <summary>
     /// 获取所有数据
     /// </summary>
     /// <returns></returns>
-    public List<UserGroundDataBean> GetAllUserGroundDataData()
+    public List<UserSceneDataBean> GetAllUserGroundDataData()
     {
-        List<UserGroundDataBean> listData = serviceUserGroundData.QueryAllData();
+        List<UserSceneDataBean> listData = serviceUserGroundData.QueryAllData();
         return listData;
     }
 
@@ -32,7 +32,7 @@ public class UserGroundDataModel : BaseMVCModel
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public UserGroundDataBean GetUserGroundDataDataById(string groundId)
+    public UserSceneDataBean GetUserGroundDataDataById(string groundId)
     {
         return serviceUserGroundData.QueryDataById(groundId);
     }
@@ -41,7 +41,7 @@ public class UserGroundDataModel : BaseMVCModel
     /// 保存游戏数据
     /// </summary>
     /// <param name="data"></param>
-    public void SetUserGroundDataData(UserGroundDataBean data)
+    public void SetUserGroundDataData(UserSceneDataBean data)
     {
         serviceUserGroundData.UpdateData(data);
     }

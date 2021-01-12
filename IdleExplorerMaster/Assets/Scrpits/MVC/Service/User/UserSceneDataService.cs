@@ -9,20 +9,20 @@ using UnityEditor;
 using System;
 using System.Collections.Generic;
 
-public class UserGroundDataService : BaseDataStorage<UserGroundDataBean>
+public class UserSceneDataService : BaseDataStorage<UserSceneDataBean>
 {
     protected string saveFileName;
 
-    public UserGroundDataService()
+    public UserSceneDataService()
     {
-        saveFileName = "UserGroundData";
+        saveFileName = "UserSceneData_";
     }
 
     /// <summary>
     /// 查询所有数据
     /// </summary>
     /// <returns></returns>
-    public List<UserGroundDataBean> QueryAllData()
+    public List<UserSceneDataBean> QueryAllData()
     {
         return null;
     }
@@ -32,18 +32,18 @@ public class UserGroundDataService : BaseDataStorage<UserGroundDataBean>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public UserGroundDataBean QueryDataById(string groundId)
+    public UserSceneDataBean QueryDataById(string groundId)
     {
-        return BaseLoadData("UserGroundData_" + groundId);
+        return BaseLoadData(saveFileName + groundId);
     }
 
     /// <summary>
     /// 更新数据
     /// </summary>
     /// <param name="data"></param>
-    public void UpdateData(UserGroundDataBean data)
+    public void UpdateData(UserSceneDataBean data)
     {
-        saveFileName = "UserGroundData_" + data.groundId;
+        saveFileName = saveFileName + data.groundId;
         BaseSaveData(saveFileName, data);
     }
 }

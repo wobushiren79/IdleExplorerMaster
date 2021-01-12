@@ -11,7 +11,7 @@ public class CameraHandler : BaseHandler<CameraHandler, CameraManager>
     /// <param name="groundH"></param>
     public void InitCamera()
     {
-        UserGroundDataBean userGroundData = GroundBuildHandler.Instance.currentGroundData;
+        UserSceneDataBean userGroundData = GroundBuildHandler.Instance.currentGroundData;
         float maxX = GroundBuildHandler.Instance.itemHexagonsX * userGroundData.groundX - GroundBuildHandler.Instance.itemHexagonsX;
         float maxZ = GroundBuildHandler.Instance.itemHexagonsZ * userGroundData.groundZ - GroundBuildHandler.Instance.itemHexagonsZ;
         manager.SetMaxBorder(maxX, 0, maxZ);

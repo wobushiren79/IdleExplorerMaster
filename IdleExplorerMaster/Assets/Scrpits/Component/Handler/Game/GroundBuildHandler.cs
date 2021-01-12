@@ -6,7 +6,7 @@ using UnityEngine;
 public class GroundBuildHandler : BaseHandler<GroundBuildHandler, GroundBuildManager>
 {
     public GroundHexagons modelForGroundHexagons;
-    public UserGroundDataBean currentGroundData;
+    public UserSceneDataBean currentGroundData;
 
     public float itemHexagonsX = 0;
     public float itemHexagonsZ = 0;
@@ -15,7 +15,7 @@ public class GroundBuildHandler : BaseHandler<GroundBuildHandler, GroundBuildMan
     /// 初始化地形数据
     /// </summary>
     /// <param name="userGroundData"></param>
-    public void InitGround(UserGroundDataBean userGroundData)
+    public void InitGround(UserSceneDataBean userGroundData)
     {
         this.currentGroundData = userGroundData;
         BuildGroundHexagons(1, userGroundData.groundX, userGroundData.groundZ);
