@@ -41,6 +41,8 @@ public class GameLauncher : BaseMonoBehaviour
 
             itemGroundHexagons.ChangeDiscoveryStatus(AreaDiscoveryStatusEnum.Explore, actionChangeDiscoveryComplete);
         }
+
+        UIHandler.Instance.manager.OpenUI(UIEnum.GameStart);
     }
 
 }
