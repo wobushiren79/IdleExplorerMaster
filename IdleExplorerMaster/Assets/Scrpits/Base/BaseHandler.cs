@@ -5,22 +5,23 @@ public class BaseHandler<T,M> : BaseSingletonMonoBehaviour<T>
     where M : BaseManager
     where T : BaseMonoBehaviour
 {
-    protected M manager;
+   
+    private M mManager;
 
     protected virtual void Awake()
     {
-        manager = Manager;
+        
     }
 
-    public M Manager
+    public M manager
     {
         get
         {
-            if (manager == null)
+            if (mManager == null)
             {
-                manager = CptUtil.AddCpt<M>(gameObject);
+                mManager = CptUtil.AddCpt<M>(gameObject);
             }
-            return manager; 
+            return mManager; 
         }    
     }
 }

@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3ca78627da65aa448161da22ff9a0a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  terrainRenderer: {fileID: 2903863855289411472}
 --- !u!1 &5872661971081875033
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,6 +175,10 @@ MonoBehaviour:
   areaCover: {fileID: 7754584685661968257}
   areaType: {fileID: 0}
   areaTerrain: {fileID: 6295737855072782377}
+  groundHexagonsData:
+    id: 0
+    valid: 0
+    m_BelongId: 0
 --- !u!1 &5872661971578487817
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,6 +224,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modelForGroundHexagons: {fileID: 5872661971081875035}
+  currentGroundData:
+    id: 0
+    valid: 0
+    groundId: 
+    groundX: 0
+    groundZ: 0
+    playerId: 
+    enemyId: []
+  itemHexagonsX: 0
+  itemHexagonsZ: 0
 --- !u!64 &5834715321392940656
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -258,7 +273,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6226259362143839504}
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7981757252280082874}
@@ -358,7 +373,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9c0721c9b4f3c4cb894656485acb9228, type: 2}
+      objectReference: {fileID: 2100000, guid: b04dfc3007ce9c840ba65ac750591c8a, type: 2}
     - target: {fileID: 919132149155446097, guid: 449a872998abcb246b13422497b2bb0a,
         type: 3}
       propertyPath: m_Name
@@ -369,6 +384,12 @@ PrefabInstance:
 --- !u!4 &4037393598323416319 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 449a872998abcb246b13422497b2bb0a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4579331150664547092}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2903863855289411472 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 449a872998abcb246b13422497b2bb0a,
     type: 3}
   m_PrefabInstance: {fileID: 4579331150664547092}
   m_PrefabAsset: {fileID: 0}

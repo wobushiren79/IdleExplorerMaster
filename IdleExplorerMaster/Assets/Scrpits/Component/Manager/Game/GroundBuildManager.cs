@@ -6,8 +6,10 @@ public class GroundBuildManager : BaseManager, IAreaTypeInfoView
 {
     //模型合集
     protected Dictionary<string, GameObject> dicModel = new Dictionary<string, GameObject>();
-
-    protected List<GroundHexagonsBean> listGroundHexagonsData = new List<GroundHexagonsBean>();
+    //所有数据集合
+    protected Dictionary<Vector3, GroundHexagons> dicGroundHexagons = new Dictionary<Vector3, GroundHexagons>();
+    //势力数据
+    protected Dictionary<string, List<GroundHexagons>> dicInfluence = new Dictionary<string, List<GroundHexagons>>();
 
     protected readonly string Path_AreaType_Base = "AreaType/Base";
     protected readonly string Path_AreaType_Null = "AreaType/Null";
@@ -20,6 +22,7 @@ public class GroundBuildManager : BaseManager, IAreaTypeInfoView
     protected List<AreaTypeInfoBean> listAreaTypeInfoForNull = new List<AreaTypeInfoBean>();
     protected List<AreaTypeInfoBean> listAreaTypeInfoForBuilding = new List<AreaTypeInfoBean>();
     protected List<AreaTypeInfoBean> listAreaTypeInfoForGold = new List<AreaTypeInfoBean>();
+
     private void Awake()
     {
         controllerForAreaType = new AreaTypeInfoController(this, this);
@@ -39,6 +42,7 @@ public class GroundBuildManager : BaseManager, IAreaTypeInfoView
                         listAreaTypeInfoForBase.Add(itemData);
                         break;
                     case AreaTypeEnum.Null:
+                    case AreaTypeEnum.BaseInit:
                         listAreaTypeInfoForNull.Add(itemData);
                         break;
                     case AreaTypeEnum.Building:
@@ -54,12 +58,108 @@ public class GroundBuildManager : BaseManager, IAreaTypeInfoView
     }
 
     /// <summary>
+    /// 获取所有地形数据
+    /// </summary>
+    /// <returns></returns>
+    public List<GroundHexagons> GetListGroundHexagons()
+    {
+        List<GroundHexagons> listData = new List<GroundHexagons>();
+        foreach (var item in dicGroundHexagons)
+        {
+            listData.Add(item.Value);
+        }
+        return listData;
+    }
+
+    /// <summary>
+    /// 获取环绕四周的地形
+    /// </summary>
+    /// <param name="groundHexagons"></param>
+    /// <returns></returns>
+    public List<GroundHexagons> GetGroundHexagonsForAround(GroundHexagons groundHexagons)
+    {
+        List<GroundHexagons> listData = new List<GroundHexagons>();
+        Vector3 offsetPosition = groundHexagons.groundHexagonsData.coordinatesForOffset;
+        listData = GetGroundHexagons(listData, offsetPosition + new Vector3(1, 0, 0));
+        listData = GetGroundHexagons(listData, offsetPosition + new Vector3(-1, 0, 0));
+        listData = GetGroundHexagons(listData, offsetPosition + new Vector3(0, 0, 1));
+        listData = GetGroundHexagons(listData, offsetPosition + new Vector3(0, 0, -1));
+        if (offsetPosition.x % 2 == 0)
+        {
+            listData = GetGroundHexagons(listData, offsetPosition + new Vector3(1, 0, 1));
+            listData = GetGroundHexagons(listData, offsetPosition + new Vector3(-1, 0, 1));
+        }
+        else
+        {
+            listData = GetGroundHexagons(listData, offsetPosition + new Vector3(-1, 0, -1));
+            listData = GetGroundHexagons(listData, offsetPosition + new Vector3(1, 0, -1));
+        }
+
+        return listData;
+    }
+
+    /// <summary>
+    /// 根据偏移坐标获取数据
+    /// </summary>
+    /// <param name="offsetPosition"></param>
+    /// <returns></returns>
+    public GroundHexagons GetGroundHexagons(Vector3 offsetPosition)
+    {
+        if (dicGroundHexagons.TryGetValue(offsetPosition, out GroundHexagons value))
+        {
+            return value;
+        }
+        return null;
+    }
+
+    protected List<GroundHexagons> GetGroundHexagons(List<GroundHexagons> listData, Vector3 offsetPosition)
+    {
+        if (listData == null)
+            listData = new List<GroundHexagons>();
+        GroundHexagons groundHexagonsData = GetGroundHexagons(offsetPosition);
+        if (groundHexagonsData != null)
+            listData.Add(groundHexagonsData);
+        return listData;
+    }
+
+    /// <summary>
+    /// 获取势力范围
+    /// </summary>
+    /// <param name="belongId"></param>
+    /// <returns></returns>
+    public List<GroundHexagons> GetInfluence(string belongId)
+    {
+        if (dicInfluence.TryGetValue(belongId, out List<GroundHexagons> listData))
+        {
+            return listData;
+        }
+        return null;
+    }
+
+    /// <summary>
     /// 增加地面数据
     /// </summary>
     /// <param name="data"></param>
-    public void AddGroundHexagonsData(GroundHexagonsBean data)
+    public void AddGroundHexagons(GroundHexagons data)
     {
-        listGroundHexagonsData.Add(data);
+        dicGroundHexagons.Add(data.groundHexagonsData.coordinatesForOffset, data);
+    }
+
+    /// <summary>
+    /// 增加势力范围
+    /// </summary>
+    /// <param name="belongId"></param>
+    /// <param name="groundHexagons"></param>
+    public void AddInfluence(string belongId, GroundHexagons groundHexagons)
+    {
+        if (dicInfluence.TryGetValue(belongId, out List<GroundHexagons> listData))
+        {
+            listData.Add(groundHexagons);
+        }
+        else
+        {
+            dicInfluence.Add(belongId, new List<GroundHexagons>() { groundHexagons });
+        }
     }
 
     /// <summary>
@@ -82,6 +182,7 @@ public class GroundBuildManager : BaseManager, IAreaTypeInfoView
                 path = Path_AreaType_Base;
                 break;
             case AreaTypeEnum.Null:
+            case AreaTypeEnum.BaseInit:
                 path = Path_AreaType_Null;
                 break;
             case AreaTypeEnum.Building:
@@ -110,6 +211,7 @@ public class GroundBuildManager : BaseManager, IAreaTypeInfoView
                 listData = listAreaTypeInfoForBase;
                 break;
             case AreaTypeEnum.Null:
+            case AreaTypeEnum.BaseInit:
                 listData = listAreaTypeInfoForNull;
                 break;
             case AreaTypeEnum.Building:

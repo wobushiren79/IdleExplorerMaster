@@ -2,41 +2,23 @@
 using UnityEditor;
 using UnityEngine;
 
-public class Builder : Editor
+public class AssetBundlesEditor : Editor
 {
 
-    [MenuItem("Custom/BuildAssetBundle")]
+    [MenuItem("Custom/AssetBundles/BuildAssetBundle")]
     public static void BuildAssetBundle()
     {
 
         //根据BuildSetting里面所激活的平台进行打包 设置过AssetBundleName的都会进行打包
-        BuildPipeline.BuildAssetBundles("Assets/AssetBundles", BuildAssetBundleOptions.UncompressedAssetBundle, EditorUserBuildSettings.activeBuildTarget);
+        string dir = "Assets/StreamingAssets";
+        if (Directory.Exists(dir) == false)
+        {
+            Directory.CreateDirectory(dir);
+        }
+        BuildPipeline.BuildAssetBundles(dir, BuildAssetBundleOptions.UncompressedAssetBundle, EditorUserBuildSettings.activeBuildTarget);
         AssetDatabase.Refresh();
         Debug.Log("打包完成");
 
-    }
-
-    [MenuItem("Custom/ReNamePuzzlesAsset")]
-    public static void ReAssetName()
-    {
-        Object[] objs = Selection.objects;
-        for (int i = 0; i < objs.Length; i++)
-        {
-            string path = AssetDatabase.GetAssetPath(objs[i]);
-            FileInfo dir = new FileInfo(path);
-            string parent = dir.Directory.Name;
-            AssetImporter.GetAtPath(path).assetBundleName = "puzzlespic/"+ parent + "/" + objs[i].name;
-            if (i % 10 == 0)
-            {
-                bool isCancel = EditorUtility.DisplayCancelableProgressBar("修改中", path, (float)i / objs.Length);
-                if (isCancel)
-                {
-                    EditorUtility.ClearProgressBar();
-                    break;
-                }
-            }
-        }
-        EditorUtility.ClearProgressBar();
     }
 
 
@@ -44,7 +26,7 @@ public class Builder : Editor
     /// 清除之前设置过的AssetBundleName，避免产生不必要的资源也打包
     /// 之前说过，只要设置了AssetBundleName的，都会进行打包，不论在什么目录下
     /// </summary>
-    [MenuItem("Custom/ClearAssetBundlesName")]
+    [MenuItem("Custom/AssetBundles/ClearAssetBundlesName")]
     public static void ClearAssetBundlesName()
     {
         int length = AssetDatabase.GetAllAssetBundleNames().Length;
@@ -62,5 +44,4 @@ public class Builder : Editor
         length = AssetDatabase.GetAllAssetBundleNames().Length;
         Debug.Log(length);
     }
-
 }

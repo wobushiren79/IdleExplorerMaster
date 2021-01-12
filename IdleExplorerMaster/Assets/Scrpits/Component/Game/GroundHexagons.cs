@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class GroundHexagons : BaseMonoBehaviour
 {
@@ -8,29 +9,26 @@ public class GroundHexagons : BaseMonoBehaviour
     public AreaType areaType;
     public AreaTerrain areaTerrain;
 
-    protected  GroundHexagonsBean groundHexagonsData;
+    public GroundHexagonsBean groundHexagonsData;
+    
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            areaType.ShowAreaType();
-            areaTerrain.RolloverTerrain(null,null);
-            ChangeDiscoveryStatus(AreaDiscoveryStatusEnum.Explore);
-        }
-        if (Input.GetMouseButtonDown(0))
-        {
-            ChangeDiscoveryStatus(AreaDiscoveryStatusEnum.Unexplored);
-        }
-    }
 
     /// <summary>
     /// 设置地形数据
     /// </summary>
     /// <param name="groundHexagonsData"></param>
-    public void SetGroundHexagonsData(GroundHexagonsBean groundHexagonsData, AreaType areaType)
+    public void SetGroundHexagonsData(GroundHexagonsBean groundHexagonsData)
     {
         this.groundHexagonsData = groundHexagonsData;
+        areaTerrain.SetBelong(0, Color.white);
+    }
+
+    /// <summary>
+    /// 设置地图资源类型
+    /// </summary>
+    /// <param name="areaType"></param>
+    public void SetAreaType( AreaType areaType)
+    {
         this.areaType = areaType;
     }
 
@@ -38,16 +36,16 @@ public class GroundHexagons : BaseMonoBehaviour
     /// 修改探索状态
     /// </summary>
     /// <param name="areaDiscoveryStatus"></param>
-    public void ChangeDiscoveryStatus(AreaDiscoveryStatusEnum  areaDiscoveryStatus)
+    public void ChangeDiscoveryStatus(AreaDiscoveryStatusEnum  areaDiscoveryStatus,Action actionComplete = null)
     {
         groundHexagonsData.areaDiscoveryStatus = areaDiscoveryStatus;
         switch (areaDiscoveryStatus)
         {
             case AreaDiscoveryStatusEnum.Unexplored:
-                areaCover.HideArea();
+                areaCover.HideArea(actionComplete);
                 break;
             case AreaDiscoveryStatusEnum.Explore:
-                areaCover.ShowArea();
+                areaCover.ShowArea(actionComplete);
                 break;
         }
     }
@@ -57,7 +55,8 @@ public class GroundHexagons : BaseMonoBehaviour
     /// </summary>
     public void ShowAreaType()
     {
-
+        if(areaType)
+            areaType.ShowAreaType();
     }
 
     /// <summary>
@@ -65,6 +64,7 @@ public class GroundHexagons : BaseMonoBehaviour
     /// </summary>
     public void HideAreaType()
     {
-
+        if (areaType)
+            areaType.HideAreaType();
     }
 }
