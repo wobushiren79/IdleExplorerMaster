@@ -17,14 +17,64 @@ public class UserSceneDataBean : BaseBean
     public int groundX;
     public int groundZ;
 
-    public string playerId;
-    public List<string> enemyId;
+    public List<CampDataBean> listCampData;
 
-    public UserSceneDataBean(int groundX, int groundZ)
+    public List<GroundHexagonsBean> listGroundData;
+
+
+    public UserSceneDataBean(int groundX, int groundZ, int playerNumber)
     {
         this.groundX = groundX;
         this.groundZ = groundZ;
         groundId = SystemUtil.GetUUID(SystemUtil.UUIDTypeEnum.N);
-        playerId = "Player_" + SystemUtil.GetUUID(SystemUtil.UUIDTypeEnum.N);
+        listCampData = new List<CampDataBean>() ;
+        for (int i = 0; i < playerNumber + 1; i++)
+        {
+            CampDataBean campData = new CampDataBean();
+            if (i == 0)
+            {
+                campData.isPlayer = true;
+            }
+            listCampData.Add(campData);
+        }
+    }
+
+    /// <summary>
+    /// 获取玩家阵营数据
+    /// </summary>
+    /// <returns></returns>
+    public CampDataBean GetPlayerCampData()
+    {
+        for (int i = 0; i < listCampData.Count; i++)
+        {
+            CampDataBean itemCampData = listCampData[i];
+            if (itemCampData.isPlayer)
+            {
+                return itemCampData;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// 获取玩家阵营ID
+    /// </summary>
+    /// <returns></returns>
+    public string GetPlayerBelongId()
+    {
+        CampDataBean campData = GetPlayerCampData();
+        if (campData != null)
+            return campData.belongId;
+        return null;
+    }
+
+
+    /// <summary>
+    /// 设置地面数据
+    /// </summary>
+    /// <param name="listData"></param>
+    public void SetGroundData(List<GroundHexagonsBean> listGroundData)
+    {
+        this.listGroundData = listGroundData;
     }
 }

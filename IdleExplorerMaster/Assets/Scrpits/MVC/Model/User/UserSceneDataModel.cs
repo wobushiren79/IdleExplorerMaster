@@ -21,7 +21,7 @@ public class UserSceneDataModel : BaseMVCModel
     /// 获取所有数据
     /// </summary>
     /// <returns></returns>
-    public List<UserSceneDataBean> GetAllUserGroundDataData()
+    public List<UserSceneDataBean> GetAllUserSceneDataData()
     {
         List<UserSceneDataBean> listData = serviceUserGroundData.QueryAllData();
         return listData;
@@ -32,7 +32,7 @@ public class UserSceneDataModel : BaseMVCModel
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public UserSceneDataBean GetUserGroundDataDataById(string groundId)
+    public UserSceneDataBean GetUserSceneDataDataById(string groundId)
     {
         return serviceUserGroundData.QueryDataById(groundId);
     }
@@ -41,7 +41,7 @@ public class UserSceneDataModel : BaseMVCModel
     /// 保存游戏数据
     /// </summary>
     /// <param name="data"></param>
-    public void SetUserGroundDataData(UserSceneDataBean data)
+    public void SetUserSceneDataData(UserSceneDataBean data)
     {
         serviceUserGroundData.UpdateData(data);
     }

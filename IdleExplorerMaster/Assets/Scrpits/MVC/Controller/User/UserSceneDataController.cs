@@ -23,13 +23,22 @@ public class UserSceneDataController : BaseMVCController<UserSceneDataModel, IUs
     }
 
     /// <summary>
+    /// 保存用户数据
+    /// </summary>
+    /// <param name="userSceneData"></param>
+    public void SetUserSceneData(UserSceneDataBean userSceneData)
+    {
+        GetModel().SetUserSceneDataData(userSceneData);
+    }
+
+    /// <summary>
     /// 获取数据
     /// </summary>
     /// <param name="action"></param>
     /// <returns></returns>
-    public UserSceneDataBean GetUserGroundDataDataById(string groundId,Action<UserSceneDataBean> action)
+    public UserSceneDataBean GetUserSceneDataDataById(string groundId,Action<UserSceneDataBean> action)
     {
-        UserSceneDataBean data = GetModel().GetUserGroundDataDataById(groundId);
+        UserSceneDataBean data = GetModel().GetUserSceneDataDataById(groundId);
         if (data == null) {
             GetView().GetUserSceneDataFail("没有数据",null);
             return null;
@@ -42,9 +51,9 @@ public class UserSceneDataController : BaseMVCController<UserSceneDataModel, IUs
     /// 获取所有数据
     /// </summary>
     /// <param name="action"></param>
-    public void GetAllUserGroundDataData(Action<List<UserSceneDataBean>> action)
+    public void GetAllUserSceneDataData(Action<List<UserSceneDataBean>> action)
     {
-        List<UserSceneDataBean> listData = GetModel().GetAllUserGroundDataData();
+        List<UserSceneDataBean> listData = GetModel().GetAllUserSceneDataData();
         if (CheckUtil.ListIsNull(listData))
         {
             GetView().GetUserSceneDataFail("没有数据", null);

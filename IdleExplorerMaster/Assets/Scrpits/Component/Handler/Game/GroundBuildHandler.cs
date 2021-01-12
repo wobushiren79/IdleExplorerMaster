@@ -18,9 +18,11 @@ public class GroundBuildHandler : BaseHandler<GroundBuildHandler, GroundBuildMan
     public void InitGround(UserSceneDataBean userGroundData)
     {
         this.currentGroundData = userGroundData;
-        BuildGroundHexagons(1, userGroundData.groundX, userGroundData.groundZ);
+        List<GroundHexagonsBean> listGroundData = BuildGroundHexagons(1, userGroundData.groundX, userGroundData.groundZ);
         InitAreaTypeForBase(null);
         InitAreaTypeForRes();
+
+        GameDataHandler.Instance.manager.SetGroundData(listGroundData);
     }
 
     /// <summary>
@@ -31,11 +33,12 @@ public class GroundBuildHandler : BaseHandler<GroundBuildHandler, GroundBuildMan
     /// <param name="groundZ">Z轴范围</param>
     /// <param name="offsetX">X轴偏移角度</param>
     /// <param name="offsetZ">Z轴偏移角度</param>
-    public void BuildGroundHexagons(float hexagonsSize, int groundX, int groundZ, float offsetX = 0, float offsetZ = 0)
+    public List<GroundHexagonsBean> BuildGroundHexagons(float hexagonsSize, int groundX, int groundZ, float offsetX = 0, float offsetZ = 0)
     {
         itemHexagonsX = hexagonsSize * 2 * 0.75f;
         itemHexagonsZ = hexagonsSize * Mathf.Sqrt(3);
 
+        List<GroundHexagonsBean> listGroundData = new List<GroundHexagonsBean>();
         for (int x = 0; x < groundX; x++)
         {
             for (int z = 0; z < groundZ; z++)
@@ -49,15 +52,17 @@ public class GroundBuildHandler : BaseHandler<GroundBuildHandler, GroundBuildMan
                     //设置世界坐标
                     coordinatesForWorld = new Vector3(itemHexagonsX * x + offsetX * x, 0, itemHexagonsZ * z + offsetZ * z + tempOffsetZ),
                     //设置地形为未探索
-                    areaDiscoveryStatus = AreaDiscoveryStatusEnum.Unexplored,
+                    areaDiscoveryStatus = (int)AreaDiscoveryStatusEnum.Unexplored,
                     //设置地形类型为Null
-                    areaType = AreaTypeEnum.Null,
+                    areaType = (int)AreaTypeEnum.Null,
                 };
                 BuildItemGroundHexagons(groundHexagonsData);
+                listGroundData.Add(groundHexagonsData);
             }
         }
         //扫描地形
         StartCoroutine(CoroutineForScanGround());
+        return listGroundData;
     }
 
     /// <summary>
@@ -76,11 +81,11 @@ public class GroundBuildHandler : BaseHandler<GroundBuildHandler, GroundBuildMan
             GroundHexagons itemGroundHexagons = aroundData[i];
             //基地初始化
             SetAreaTypeForGroundHexagons(AreaTypeEnum.BaseInit, itemGroundHexagons);
-            manager.AddInfluence(currentGroundData.playerId, itemGroundHexagons);
+            manager.AddInfluence(currentGroundData.GetPlayerBelongId(), itemGroundHexagons);
         }
         //设置区域类型
         SetAreaTypeForGroundHexagons(AreaTypeEnum.Base, playerBase);
-        manager.AddInfluence(currentGroundData.playerId, playerBase);
+        manager.AddInfluence(currentGroundData.GetPlayerBelongId(), playerBase);
     }
 
     /// <summary>
@@ -92,7 +97,7 @@ public class GroundBuildHandler : BaseHandler<GroundBuildHandler, GroundBuildMan
         for (int i = 0; i < listData.Count; i++)
         {
             GroundHexagons groundHexagons = listData[i];
-            if (groundHexagons.groundHexagonsData.areaType == AreaTypeEnum.Null)
+            if (groundHexagons.groundHexagonsData.GetAreaType() == AreaTypeEnum.Null)
             {
                 //随机设置区域类型
                 AreaTypeEnum areaType = (AreaTypeEnum)Random.Range(1, 4);
@@ -135,12 +140,12 @@ public class GroundBuildHandler : BaseHandler<GroundBuildHandler, GroundBuildMan
     /// <param name="groundHexagons"></param>
     protected void SetAreaTypeForGroundHexagons(AreaTypeEnum areaType, GroundHexagons groundHexagons)
     {
-        groundHexagons.groundHexagonsData.areaType = areaType;
+        groundHexagons.groundHexagonsData.SetAreaType(areaType);
         //随机设置模型名称
-        AreaTypeInfoBean areaTypeInfo = manager.GetRandomAreaTypeInfo(groundHexagons.groundHexagonsData.areaType);
+        AreaTypeInfoBean areaTypeInfo = manager.GetRandomAreaTypeInfo(groundHexagons.groundHexagonsData.GetAreaType());
         groundHexagons.groundHexagonsData.areaTypeModelName = areaTypeInfo.model_name;
         //获取区域类型模型
-        GameObject objModelAreaType = manager.GetAreaTypeModel(groundHexagons.groundHexagonsData.areaType, groundHexagons.groundHexagonsData.areaTypeModelName);
+        GameObject objModelAreaType = manager.GetAreaTypeModel(groundHexagons.groundHexagonsData.GetAreaType(), groundHexagons.groundHexagonsData.areaTypeModelName);
         AreaType areaTypeCpt = BuildItemAreaType(groundHexagons.areaTerrain.gameObject, objModelAreaType);
         groundHexagons.SetAreaType(areaTypeCpt);
     }

@@ -38,7 +38,7 @@ public class GroundHexagons : BaseMonoBehaviour
     /// <param name="areaDiscoveryStatus"></param>
     public void ChangeDiscoveryStatus(AreaDiscoveryStatusEnum  areaDiscoveryStatus,Action actionComplete = null)
     {
-        groundHexagonsData.areaDiscoveryStatus = areaDiscoveryStatus;
+        groundHexagonsData.SetAreaDiscoveryStatus(areaDiscoveryStatus);
         switch (areaDiscoveryStatus)
         {
             case AreaDiscoveryStatusEnum.Unexplored:

@@ -6,31 +6,48 @@ using System;
 public class GroundHexagonsBean : BaseBean
 {
     //地块探索状态(仅对友方)
-    private int m_AreaDiscoveryStatus = 0;
-    public AreaDiscoveryStatusEnum areaDiscoveryStatus { get => EnumUtil.GetEnum<AreaDiscoveryStatusEnum>(m_AreaDiscoveryStatus); set => m_AreaDiscoveryStatus = (int)value; }
+    public int areaDiscoveryStatus = 0;
+    public AreaDiscoveryStatusEnum GetAreaDiscoveryStatus()
+    {
+        return ((AreaDiscoveryStatusEnum)areaDiscoveryStatus);
+    }
+    public void SetAreaDiscoveryStatus(AreaDiscoveryStatusEnum areaDiscoveryStatus) 
+    {
+        this.areaDiscoveryStatus = (int)areaDiscoveryStatus;
+    }
 
     //地块类型
-    private int m_AreaType = 0;
-    public AreaTypeEnum areaType { get => EnumUtil.GetEnum<AreaTypeEnum>(m_AreaType); set => m_AreaType = (int)value; }
+    public int areaType = 0;
+    public AreaTypeEnum GetAreaType()
+    {
+        return ((AreaTypeEnum)areaType);
+    }
+    public void SetAreaType(AreaTypeEnum areaType)
+    {
+        this.areaType = (int)areaType;
+    }
 
     //地块类型名称
-    private string m_AreaTypeModelName = "";
-    public string areaTypeModelName { get => m_AreaTypeModelName; set => m_AreaTypeModelName = value; }
+    public string areaTypeModelName = "";
 
     //地面类型
-    private int m_TerrainType = 0;
-    public TerrainTypeEnum terrainType { get => EnumUtil.GetEnum<TerrainTypeEnum>(m_TerrainType); set => m_TerrainType = (int)value; }
+    public int merrainType = 0;
+    public TerrainTypeEnum GetTerrainType()
+    {
+        return ((TerrainTypeEnum)merrainType);
+    }
+    public void SetTerrainType(TerrainTypeEnum merrainType)
+    {
+        this.merrainType = (int)merrainType;
+    }
 
     //地块归属人ID(0为未归属任何人)
-    public int m_BelongId = 0;
-    public int belongId { get => m_BelongId; set => m_BelongId = value; }
+    public int belongId = 0;
 
     //偏移坐标系
-    private Vector3 m_CoordinatesForOffset;
-    public Vector3 coordinatesForOffset { get => m_CoordinatesForOffset; set => m_CoordinatesForOffset = value; }
+    public Vector3 coordinatesForOffset;
 
     //世界坐标系
-    private Vector3 m_CoordinatesForWorld;
-    public Vector3 coordinatesForWorld { get => m_CoordinatesForWorld; set => m_CoordinatesForWorld = value; }
+    public Vector3 coordinatesForWorld;
 
 }
